@@ -6,24 +6,19 @@ Copyright © 2023 jaronnie jaron@jaronnie.com
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "gvm list go bin in local or remote",
+	Long:  `gvm list go bin in local or remote`,
+	RunE:  list,
+}
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("list called")
-	},
+func list(cmd *cobra.Command, args []string) error {
+	return nil
 }
 
 func init() {

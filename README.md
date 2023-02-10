@@ -2,6 +2,17 @@
 
 golang version manage
 
+## 配置
+
+```shell
+# ~/.zshrc
+export GOROOT=$HOME/.gvm/goroot
+export PATH=$PATH:$GOROOT/bin
+export GOPATH=$HOME/go
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
+```
+
 ## install
 
 ```shell
@@ -18,3 +29,7 @@ gvm install go1.18.5
 # will activate go 1.18 environment
 gvm activate go1.18
 ```
+
+## todo
+
+- [ ] gvm init

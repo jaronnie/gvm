@@ -7,23 +7,43 @@ package cmd
 
 import (
 	"fmt"
-
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 // activateCmd represents the activate command
 var activateCmd = &cobra.Command{
 	Use:   "activate",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "gvm activate go",
+	Long:  `gvm activate go`,
+	Args:  cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
+	RunE:  activate,
+}
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("activate called")
-	},
+func activate(cmd *cobra.Command, args []string) error {
+	gov := args[0]
+	if !strings.HasPrefix(gov, "go") {
+		return errors.New("invalid go version, please use gox.x")
+	}
+
+	homeDir, _ := os.UserHomeDir()
+
+	gvmConfigPath := fmt.Sprintf(GVMConfigPath, homeDir)
+
+	goBaseRoot := filepath.Join(gvmConfigPath, "goroot")
+	goRoot := filepath.Join(gvmConfigPath, gov)
+
+	_ = os.Remove(goBaseRoot)
+
+	err := os.Symlink(goRoot, goBaseRoot)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func init() {

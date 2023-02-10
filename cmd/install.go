@@ -100,12 +100,17 @@ func install(cmd *cobra.Command, args []string) error {
 	// TODO
 	// 断点下载
 
-	savaPath := filepath.Join(gvmConfigPath, gov)
+	savaPath := filepath.Join(gvmConfigPath)
 
 	fmt.Printf("🔥Install %s successfully\n", gov)
 	fmt.Printf("🚀Start to untar %s to %s\n", file.Name(), savaPath)
 
 	err = utilx.Untargz(file.Name(), savaPath)
+	if err != nil {
+		return err
+	}
+
+	err = os.Rename(filepath.Join(savaPath, "go"), filepath.Join(savaPath, gov))
 	if err != nil {
 		return err
 	}
