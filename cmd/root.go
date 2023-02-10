@@ -7,14 +7,13 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/jaronnie/gvm/internal/global"
 	"github.com/jaronnie/gvm/utilx"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"log"
 	"os"
 )
-
-const GVMConfigPath = "%s/.gvm"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -36,28 +35,22 @@ func Execute() {
 }
 
 func init() {
+	cobra.OnInitialize(initGlobalValue)
 	cobra.OnInitialize(initConfig)
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 func initConfig() {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
+	if b, _ := utilx.PathExists(global.GVM_CONFIG_DIR); !b {
+		if err := os.Mkdir(global.GVM_CONFIG_DIR, 0744); err != nil {
+			panic(err)
+		}
 	}
 
-	gvmConfigPath := fmt.Sprintf(GVMConfigPath, homeDir)
-
-	if b, _ := utilx.PathExists(gvmConfigPath); !b {
-		_ = os.Mkdir(gvmConfigPath, 0744)
-	}
-
-	cfgFile := gvmConfigPath + "/config.toml"
-
-	if b, _ := utilx.PathExists(cfgFile); !b {
+	if b, _ := utilx.PathExists(global.GVM_CONFIG_FILE); !b {
 		viper.SetConfigName("config")
 		viper.SetConfigType("toml")
-		viper.AddConfigPath(gvmConfigPath)
+		viper.AddConfigPath(global.GVM_CONFIG_DIR)
 
 		err := viper.SafeWriteConfig()
 		if err != nil {
@@ -65,9 +58,20 @@ func initConfig() {
 		}
 	}
 
-	viper.SetConfigFile(cfgFile)
-	err = viper.ReadInConfig()
+	viper.SetConfigFile(global.GVM_CONFIG_FILE)
+	err := viper.ReadInConfig()
 	if err != nil {
 		log.Fatalf("read in config meet error. Err: [%v]", err)
 	}
+}
+
+func initGlobalValue() {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		panic(err)
+	}
+
+	global.GVM_CONFIG_DIR = fmt.Sprintf("%s/gvm", homeDir)
+	global.GVM_CONFIG_FILE = fmt.Sprintf("%s/gvm/config.toml", homeDir)
+	global.GVM_GOROOT = fmt.Sprintf("%s/gvm/goroot", homeDir)
 }

@@ -6,7 +6,7 @@ Copyright © 2023 jaronnie jaron@jaronnie.com
 package cmd
 
 import (
-	"fmt"
+	"github.com/jaronnie/gvm/internal/global"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"os"
@@ -29,12 +29,8 @@ func activate(cmd *cobra.Command, args []string) error {
 		return errors.New("invalid go version, please use gox.x")
 	}
 
-	homeDir, _ := os.UserHomeDir()
-
-	gvmConfigPath := fmt.Sprintf(GVMConfigPath, homeDir)
-
-	goBaseRoot := filepath.Join(gvmConfigPath, "goroot")
-	goRoot := filepath.Join(gvmConfigPath, gov)
+	goBaseRoot := filepath.Join(global.GVM_CONFIG_DIR, "goroot")
+	goRoot := filepath.Join(global.GVM_CONFIG_DIR, gov)
 
 	_ = os.Remove(goBaseRoot)
 

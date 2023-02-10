@@ -6,7 +6,7 @@ golang version manage
 
 ```shell
 # ~/.zshrc
-export GOROOT=$HOME/.gvm/goroot
+export GOROOT=$HOME/gvm/goroot
 export PATH=$PATH:$GOROOT/bin
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin

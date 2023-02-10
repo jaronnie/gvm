@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/charmbracelet/bubbles/progress"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/jaronnie/gvm/internal/global"
 	"github.com/jaronnie/gvm/utilx"
 	"github.com/jaronnie/gvm/utilx/downloader"
 	"github.com/pkg/errors"
@@ -61,12 +62,8 @@ func install(cmd *cobra.Command, args []string) error {
 		return errors.New("content length less than 0")
 	}
 
-	homeDir, _ := os.UserHomeDir()
-
-	gvmConfigPath := fmt.Sprintf(GVMConfigPath, homeDir)
-
 	filename := filepath.Base(installUrl)
-	file, err := os.Create(filepath.Join(gvmConfigPath, filename))
+	file, err := os.Create(filepath.Join(global.GVM_CONFIG_DIR, filename))
 	if err != nil {
 		return err
 	}
@@ -100,17 +97,15 @@ func install(cmd *cobra.Command, args []string) error {
 	// TODO
 	// 断点下载
 
-	savaPath := filepath.Join(gvmConfigPath)
-
 	fmt.Printf("🔥Install %s successfully\n", gov)
-	fmt.Printf("🚀Start to untar %s to %s\n", file.Name(), savaPath)
+	fmt.Printf("🚀Start to untar %s to %s\n", file.Name(), global.GVM_CONFIG_DIR)
 
-	err = utilx.Untargz(file.Name(), savaPath)
+	err = utilx.Untargz(file.Name(), global.GVM_CONFIG_DIR)
 	if err != nil {
 		return err
 	}
 
-	err = os.Rename(filepath.Join(savaPath, "go"), filepath.Join(savaPath, gov))
+	err = os.Rename(filepath.Join(global.GVM_CONFIG_DIR, "go"), filepath.Join(global.GVM_CONFIG_DIR, gov))
 	if err != nil {
 		return err
 	}
