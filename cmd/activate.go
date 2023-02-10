@@ -29,12 +29,11 @@ func activate(cmd *cobra.Command, args []string) error {
 		return errors.New("invalid go version, please use gox.x")
 	}
 
-	goBaseRoot := filepath.Join(global.GVM_CONFIG_DIR, "goroot")
 	goRoot := filepath.Join(global.GVM_CONFIG_DIR, gov)
 
-	_ = os.Remove(goBaseRoot)
+	_ = os.Remove(global.GVM_GOROOT)
 
-	err := os.Symlink(goRoot, goBaseRoot)
+	err := os.Symlink(goRoot, global.GVM_GOROOT)
 	if err != nil {
 		return err
 	}
