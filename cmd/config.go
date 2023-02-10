@@ -6,9 +6,8 @@ Copyright © 2023 jaronnie jaron@jaronnie.com
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -20,13 +19,16 @@ var configCmd = &cobra.Command{
 	Use:   "config",
 	Short: "gvm config",
 	Long:  `gvm config`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("config called")
-	},
+	RunE:  config,
+}
+
+func config(cmd *cobra.Command, args []string) error {
+	viper.Set("registry", Registry)
+	return viper.WriteConfig()
 }
 
 func init() {
 	rootCmd.AddCommand(configCmd)
 
-	configCmd.Flags().StringVarP(&Registry, "registry", "i", "https://dl.google.com", "set registry")
+	configCmd.Flags().StringVarP(&Registry, "registry", "i", "https://dl.google.com/go", "set registry")
 }

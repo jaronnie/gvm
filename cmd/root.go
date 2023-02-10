@@ -9,6 +9,8 @@ import (
 	"fmt"
 	"github.com/jaronnie/gvm/utilx"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"log"
 	"os"
 )
 
@@ -17,13 +19,8 @@ const GVMConfigPath = "%s/.gvm"
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "gvm",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "golang version manage",
+	Long:  `golang version manage`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
@@ -49,7 +46,28 @@ func initConfig() {
 		panic(err)
 	}
 
-	if b, _ := utilx.PathExists(fmt.Sprintf(GVMConfigPath, homeDir)); !b {
-		_ = os.Mkdir(fmt.Sprintf(GVMConfigPath, homeDir), 0744)
+	gvmConfigPath := fmt.Sprintf(GVMConfigPath, homeDir)
+
+	if b, _ := utilx.PathExists(gvmConfigPath); !b {
+		_ = os.Mkdir(gvmConfigPath, 0744)
+	}
+
+	cfgFile := gvmConfigPath + "/config.toml"
+
+	if b, _ := utilx.PathExists(cfgFile); !b {
+		viper.SetConfigName("config")
+		viper.SetConfigType("toml")
+		viper.AddConfigPath(gvmConfigPath)
+
+		err := viper.SafeWriteConfig()
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	viper.SetConfigFile(cfgFile)
+	err = viper.ReadInConfig()
+	if err != nil {
+		log.Fatalf("read in config meet error. Err: [%v]", err)
 	}
 }
