@@ -1,0 +1,21 @@
+version: "3"
+
+tasks:
+  install:
+    deps:
+      - build
+    cmds:
+      - cp dist/gvm_{{OS}}_{{ARCH}}/gvm $GOBIN
+    silent: true
+  fmt:
+    cmds:
+      - sh scripts/goimports.sh {{ if empty .CLI_ARGS }}all{{ else }}git{{ end }}
+    silent: true
+  build:
+    cmds:
+      - goreleaser build --snapshot --single-target --rm-dist
+    silent: true
+  release:
+    cmds:
+      - goreleaser release --rm-dist
+    silent: true

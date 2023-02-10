@@ -7,18 +7,20 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/charmbracelet/bubbles/progress"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/jaronnie/gvm/internal/global"
-	"github.com/jaronnie/gvm/utilx"
-	"github.com/jaronnie/gvm/utilx/downloader"
-	"github.com/pkg/errors"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/charmbracelet/bubbles/progress"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/pkg/errors"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+
+	"github.com/jaronnie/gvm/internal/global"
+	"github.com/jaronnie/gvm/utilx"
+	"github.com/jaronnie/gvm/utilx/downloader"
 )
 
 // installCmd represents the install command

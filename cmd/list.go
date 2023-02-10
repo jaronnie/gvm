@@ -7,12 +7,14 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/fatih/color"
-	"github.com/jaronnie/gvm/internal/global"
-	"github.com/jaronnie/gvm/internal/vm"
-	"github.com/spf13/cobra"
 	"os"
 	"path/filepath"
+
+	"github.com/fatih/color"
+	"github.com/spf13/cobra"
+
+	"github.com/jaronnie/gvm/internal/global"
+	"github.com/jaronnie/gvm/internal/vm"
 )
 
 // listCmd represents the list command

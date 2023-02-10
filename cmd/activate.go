@@ -6,12 +6,14 @@ Copyright © 2023 jaronnie jaron@jaronnie.com
 package cmd
 
 import (
-	"github.com/jaronnie/gvm/internal/global"
-	"github.com/pkg/errors"
-	"github.com/spf13/cobra"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/pkg/errors"
+	"github.com/spf13/cobra"
+
+	"github.com/jaronnie/gvm/internal/global"
 )
 
 // activateCmd represents the activate command

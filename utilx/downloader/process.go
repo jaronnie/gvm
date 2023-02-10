@@ -1,9 +1,10 @@
 package downloader
 
 import (
-	tea "github.com/charmbracelet/bubbletea"
 	"io"
 	"os"
+
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 var P *tea.Program

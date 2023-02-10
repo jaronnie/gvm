@@ -1,9 +1,10 @@
 package vm
 
 import (
-	"github.com/jaronnie/gvm/internal/global"
 	"io/ioutil"
 	"strings"
+
+	"github.com/jaronnie/gvm/internal/global"
 )
 
 type ReadDirVM struct{}

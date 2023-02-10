@@ -6,6 +6,7 @@ require (
 	github.com/charmbracelet/bubbles v0.15.0
 	github.com/charmbracelet/bubbletea v0.23.2
 	github.com/charmbracelet/lipgloss v0.6.0
+	github.com/fatih/color v1.14.1
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.15.0
@@ -15,7 +16,6 @@ require (
 	github.com/aymanbagabas/go-osc52 v1.2.1 // indirect
 	github.com/charmbracelet/harmonica v0.2.0 // indirect
 	github.com/containerd/console v1.0.3 // indirect
-	github.com/fatih/color v1.14.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect

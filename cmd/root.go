@@ -7,12 +7,14 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/jaronnie/gvm/internal/global"
-	"github.com/jaronnie/gvm/utilx"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"log"
 	"os"
+
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+
+	"github.com/jaronnie/gvm/internal/global"
+	"github.com/jaronnie/gvm/utilx"
 )
 
 // rootCmd represents the base command when called without any subcommands
