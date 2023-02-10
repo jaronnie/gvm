@@ -17,6 +17,10 @@ import (
 	"github.com/jaronnie/gvm/utilx"
 )
 
+var (
+	Registry string
+)
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "gvm",
@@ -40,6 +44,7 @@ func init() {
 	cobra.OnInitialize(initGlobalValue)
 	cobra.OnInitialize(initConfig)
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.PersistentFlags().StringVarP(&Registry, "registry", "i", "https://dl.google.com/go", "set registry")
 }
 
 func initConfig() {

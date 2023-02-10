@@ -10,10 +10,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-var (
-	Registry string
-)
-
 // configCmd represents the config command
 var configCmd = &cobra.Command{
 	Use:   "config",
@@ -29,6 +25,4 @@ func config(cmd *cobra.Command, args []string) error {
 
 func init() {
 	rootCmd.AddCommand(configCmd)
-
-	configCmd.Flags().StringVarP(&Registry, "registry", "i", "https://dl.google.com/go", "set registry")
 }
