@@ -26,9 +26,7 @@ var listCmd = &cobra.Command{
 }
 
 func list(cmd *cobra.Command, args []string) error {
-	var rd vm.Interface
-
-	rd = vm.NewReadDirVM()
+	rd := vm.NewReadDirVM()
 
 	vs, err := rd.List()
 	if err != nil {

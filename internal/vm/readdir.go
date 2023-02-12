@@ -1,7 +1,7 @@
 package vm
 
 import (
-	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/jaronnie/gvm/internal/global"
@@ -14,7 +14,7 @@ func NewReadDirVM() Interface {
 }
 
 func (r *ReadDirVM) List() ([]string, error) {
-	dir, err := ioutil.ReadDir(global.GVM_CONFIG_DIR)
+	dir, err := os.ReadDir(global.GVM_CONFIG_DIR)
 	if err != nil {
 		return nil, err
 	}
