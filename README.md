@@ -2,15 +2,12 @@
 
 golang version manage
 
-## 配置
+`one issue need help: can not use in goland's terminal!`
+
+## init
 
 ```shell
-# ~/.zshrc
-export GOROOT=$HOME/gvm/goroot
-export PATH=$PATH:$GOROOT/bin
-export GOPATH=$HOME/go
-export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOBIN
+gvm init
 ```
 
 ## install
@@ -32,4 +29,4 @@ gvm activate go1.18
 
 ## todo
 
-- [ ] gvm init
+- [ ] support windows

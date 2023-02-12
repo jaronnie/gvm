@@ -78,7 +78,9 @@ func initGlobalValue() {
 		panic(err)
 	}
 
+	global.HOME_DIR = homeDir
 	global.GVM_CONFIG_DIR = fmt.Sprintf("%s/gvm", homeDir)
 	global.GVM_CONFIG_FILE = fmt.Sprintf("%s/gvm/config.toml", homeDir)
+	global.GVM_CONFIG_RC = fmt.Sprintf("%s/gvm/.gvmrc", homeDir)
 	global.GVM_GOROOT = fmt.Sprintf("%s/gvm/goroot", homeDir)
 }
