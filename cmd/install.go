@@ -7,20 +7,21 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"strings"
+	"time"
 
-	"github.com/charmbracelet/bubbles/progress"
-	tea "github.com/charmbracelet/bubbletea"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	pb "gopkg.in/cheggaaa/pb.v1"
 
 	"github.com/jaronnie/gvm/internal/global"
 	"github.com/jaronnie/gvm/utilx"
-	"github.com/jaronnie/gvm/utilx/downloader"
 )
 
 // installCmd represents the install command
@@ -31,8 +32,6 @@ var installCmd = &cobra.Command{
 	Args:  cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 	RunE:  install,
 }
-
-var p *tea.Program
 
 func install(cmd *cobra.Command, args []string) error {
 	cmd.SilenceUsage = true
@@ -58,8 +57,6 @@ func install(cmd *cobra.Command, args []string) error {
 	}
 	defer resp.Body.Close()
 
-	// Don't add TUI if the header doesn't include content size
-	// it's impossible see progress without total
 	if resp.ContentLength <= 0 {
 		return errors.New("content length less than 0")
 	}
@@ -73,31 +70,27 @@ func install(cmd *cobra.Command, args []string) error {
 
 	defer os.Remove(file.Name())
 
-	pw := &downloader.ProgressWriter{
-		Total:  int(resp.ContentLength),
-		File:   file,
-		Reader: resp.Body,
-		OnProgress: func(ratio float64) {
-			p.Send(downloader.ProgressMsg(ratio))
-		},
-	}
+	length := resp.Header.Get("Content-Length")
+	lengthKb, _ := strconv.ParseFloat(length, 64)
 
-	m := downloader.Model{
-		Pw:       pw,
-		Progress: progress.New(progress.WithDefaultGradient()),
-	}
-	// Start Bubble Tea
-	p = tea.NewProgram(m)
+	fmt.Printf("🚀Save to: %s\n", file.Name())
 
-	// Start the download
-	go pw.Start()
+	bar := pb.New(int(lengthKb)).SetUnits(pb.U_BYTES_DEC).SetRefreshRate(time.Millisecond * 10)
 
-	if _, err := p.Run(); err != nil {
-		return err
-	}
+	// 显示下载速度
+	bar.ShowSpeed = true
+	// 显示剩余时间
+	bar.ShowTimeLeft = true
+	// 显示完成时间
+	bar.ShowFinalTime = true
+	bar.SetWidth(80)
+	bar.Start()
 
-	// TODO
-	// 断点下载
+	writer := io.MultiWriter(file, bar)
+
+	_, err = io.Copy(writer, resp.Body)
+
+	bar.Finish()
 
 	fmt.Printf("🔥Install %s successfully\n", gov)
 	fmt.Printf("🚀Start to untar %s to %s\n", file.Name(), global.GVM_CONFIG_DIR)
