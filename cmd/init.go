@@ -93,7 +93,7 @@ func initx(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Printf("please exec `source %s `to activate gvm\n", shellRcFile)
+	fmt.Printf("please exec `source %s` to activate gvm\n", shellRcFile)
 
 	return nil
 }
