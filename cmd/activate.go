@@ -6,7 +6,9 @@ Copyright © 2023 jaronnie jaron@jaronnie.com
 package cmd
 
 import (
+	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -39,6 +41,12 @@ func activate(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+
+	output, err := exec.Command("go", "version").CombinedOutput()
+	if err != nil {
+		return err
+	}
+	fmt.Printf(string(output))
 
 	return nil
 }

@@ -25,16 +25,15 @@ var (
 if [ -f "${HOME}/gvm/.gvmrc" ]; then
     source "${HOME}/gvm/.gvmrc"
 fi
-
 `
 )
 
 var (
 	GVMRCTemplateInUnix = `export GOROOT=$HOME/gvm/goroot
 export PATH=$PATH:$GOROOT/bin
-export GOPATH={{if empty (env "GOPATH") }}$HOME/gvm{{else}}{{ env "GOPATH" }}{{end}}
+{{if empty (env "GOPATH") }}export GOPATH=$HOME/gvm
 export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOBIN
+export PATH=$PATH:$GOBIN{{end}}
 `
 )
 
@@ -52,7 +51,7 @@ func initx(cmd *cobra.Command, args []string) error {
 		return errors.New("can not get shell type")
 	}
 
-	fmt.Printf("get shell type %s\n", shellType)
+	fmt.Printf("🚀get shell type %s\n", shellType)
 
 	// get shell rc file
 	var shellRcFile string
@@ -93,7 +92,7 @@ func initx(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Printf("please exec `source %s` to activate gvm\n", shellRcFile)
+	fmt.Printf("🚀please exec `source %s` to activate gvm\n", shellRcFile)
 
 	return nil
 }
