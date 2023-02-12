@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -79,6 +80,19 @@ func initx(cmd *cobra.Command, args []string) error {
 		_, err = shellConfigfile.Write([]byte(SetUpGVMInUnix))
 		if err != nil {
 			return err
+		}
+	}
+
+	// go env GOPATH
+	goPath := os.Getenv("GOPATH")
+	if goPath == "" {
+		output, err := exec.Command("go", "env", "GOPATH").Output()
+		if err != nil {
+			// warning
+			output = []byte("")
+		} else {
+			output = bytes.TrimRight(output, "\n")
+			_ = os.Setenv("GOPATH", string(output))
 		}
 	}
 

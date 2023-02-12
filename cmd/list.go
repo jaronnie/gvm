@@ -37,7 +37,7 @@ func list(cmd *cobra.Command, args []string) error {
 
 	goRoot, err := os.Readlink(global.GVM_GOROOT)
 	if err != nil {
-		return err
+		// warning: do not use gvm activate before gvm list
 	}
 
 	for _, v := range vs {

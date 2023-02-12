@@ -10,7 +10,7 @@ golang version manage
 gvm init
 ```
 
-## install
+## install go
 
 ```shell
 # will install go 1.18
@@ -20,7 +20,7 @@ gvm install go1.18
 gvm install go1.18.5
 ```
 
-## activate
+## activate go
 
 ```shell
 # will activate go 1.18 environment
