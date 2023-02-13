@@ -9,6 +9,7 @@ golang version manage
 初始化 gvm
 ```shell
 gvm init
+# gvm init <shellType>
 ```
 
 ## auto completion
