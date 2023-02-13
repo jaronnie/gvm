@@ -11,7 +11,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -50,6 +49,11 @@ var initCmd = &cobra.Command{
 
 func initx(cmd *cobra.Command, args []string) error {
 	shellType := os.Getenv("SHELL")
+
+	if len(args) == 1 {
+		shellType = args[0]
+	}
+
 	if shellType == "" {
 		return errors.New("can not get shell type")
 	}
@@ -58,16 +62,16 @@ func initx(cmd *cobra.Command, args []string) error {
 
 	// get shell rc file
 	var shellRcFile string
-	switch {
-	case strings.Contains(shellType, "zsh"):
+	switch filepath.Base(shellType) {
+	case "sh":
+		shellRcFile = filepath.Join(global.HOME_DIR, ".shrc")
+	case "bash":
+		shellRcFile = filepath.Join(global.HOME_DIR, ".bashrc")
+	case "zsh":
 		shellRcFile = filepath.Join(global.HOME_DIR, ".zshrc")
-	case strings.Contains(shellType, "bash"):
-		shellRcFile = filepath.Join(global.HOME_DIR, ".bashrc")
-	case strings.Contains(shellType, "fish"):
-		shellRcFile = filepath.Join(global.HOME_DIR, ".bashrc")
 	}
 
-	shellConfigfile, err := os.OpenFile(shellRcFile, os.O_WRONLY|os.O_APPEND, 0744)
+	shellConfigfile, err := os.OpenFile(shellRcFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0744)
 	if err != nil {
 		return err
 	}
