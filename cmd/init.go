@@ -34,7 +34,9 @@ var (
 export PATH=$PATH:$GOROOT/bin
 {{if empty (env "GOPATH") }}export GOPATH=$HOME/gvm
 export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOBIN{{end}}
+export PATH=$PATH:$GOBIN{{else}}export GOPATH={{ env "GOPATH" }}
+export GOBIN=$GOPATH/bin
+{{end}}
 `
 )
 
