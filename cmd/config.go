@@ -10,6 +10,11 @@ import (
 	"github.com/spf13/viper"
 )
 
+var SupportMirrors = []string{
+	"https://dl.google.com/go",
+	"https://mirrors.aliyun.com/golang",
+}
+
 // configCmd represents the config command
 var configCmd = &cobra.Command{
 	Use:   "config",

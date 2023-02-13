@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -45,6 +46,8 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	rootCmd.PersistentFlags().StringVarP(&Registry, "registry", "i", "https://dl.google.com/go", "set registry")
+
+	registerFlagCompletion()
 }
 
 func initConfig() {
@@ -83,4 +86,11 @@ func initGlobalValue() {
 	global.GVM_CONFIG_FILE = fmt.Sprintf("%s/gvm/config.toml", homeDir)
 	global.GVM_CONFIG_RC = fmt.Sprintf("%s/gvm/.gvmrc", homeDir)
 	global.GVM_GOROOT = fmt.Sprintf("%s/gvm/goroot", homeDir)
+}
+
+func registerFlagCompletion() {
+	_ = configCmd.RegisterFlagCompletionFunc("registry", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cobra.CompDebugln(strings.Join(args, ","), true)
+		return SupportMirrors, cobra.ShellCompDirectiveDefault
+	})
 }

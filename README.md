@@ -11,6 +11,14 @@ golang version manage
 gvm init
 ```
 
+## auto completion
+
+```shell
+zsh:
+# echo "autoload -U compinit; compinit" >> ~/.zshrc
+gvm completion zsh > "${fpath[1]}/_gvm"
+```
+
 ## install go
 
 ```shell

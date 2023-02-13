@@ -26,7 +26,19 @@ var activateCmd = &cobra.Command{
 	Short: "gvm activate go",
 	Long:  `gvm activate go`,
 	Args:  cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
-	RunE:  activate,
+	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		if len(args) != 0 {
+			return nil, cobra.ShellCompDirectiveNoFileComp
+		}
+		rd := vm.NewReadDirVM()
+
+		vs, err := rd.List()
+		if err != nil {
+			return nil, cobra.ShellCompDirectiveDefault
+		}
+		return vs, cobra.ShellCompDirectiveDefault
+	},
+	RunE: activate,
 }
 
 func activate(cmd *cobra.Command, args []string) error {

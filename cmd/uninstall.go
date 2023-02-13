@@ -15,6 +15,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/jaronnie/gvm/internal/global"
+	"github.com/jaronnie/gvm/internal/vm"
 )
 
 // uninstallCmd represents the uninstall command
@@ -23,7 +24,19 @@ var uninstallCmd = &cobra.Command{
 	Short: "gvm uninstall",
 	Long:  `gvm uninstall`,
 	Args:  cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
-	RunE:  uninstall,
+	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		if len(args) != 0 {
+			return nil, cobra.ShellCompDirectiveNoFileComp
+		}
+		rd := vm.NewReadDirVM()
+
+		vs, err := rd.List()
+		if err != nil {
+			return nil, cobra.ShellCompDirectiveDefault
+		}
+		return vs, cobra.ShellCompDirectiveDefault
+	},
+	RunE: uninstall,
 }
 
 func uninstall(cmd *cobra.Command, args []string) error {
