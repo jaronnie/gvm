@@ -6,6 +6,7 @@ golang version manage
 
 ## init
 
+初始化 gvm
 ```shell
 gvm init
 ```
@@ -25,6 +26,21 @@ gvm install go1.18.5
 ```shell
 # will activate go 1.18 environment
 gvm activate go1.18
+```
+
+## uninstall go
+
+```shell
+gvm uninstall go1.18.5
+```
+
+## QA
+
+### 下载 go 压缩包失败
+
+可以通过设置阿里云的 registry 镜像源解决
+```shell
+gvm config --registry https://mirrors.aliyun.com/golang
 ```
 
 ## todo
