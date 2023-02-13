@@ -28,7 +28,7 @@ var uninstallCmd = &cobra.Command{
 		if len(args) != 0 {
 			return nil, cobra.ShellCompDirectiveNoFileComp
 		}
-		rd := vm.NewReadDirVM()
+		rd := vm.NewLocalVM()
 
 		vs, err := rd.List()
 		if err != nil {

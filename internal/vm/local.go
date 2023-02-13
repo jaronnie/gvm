@@ -7,13 +7,13 @@ import (
 	"github.com/jaronnie/gvm/internal/global"
 )
 
-type ReadDirVM struct{}
+type LocalVM struct{}
 
-func NewReadDirVM() Interface {
-	return &ReadDirVM{}
+func NewLocalVM() Interface {
+	return &LocalVM{}
 }
 
-func (r *ReadDirVM) List() ([]string, error) {
+func (r *LocalVM) List() ([]string, error) {
 	dir, err := os.ReadDir(global.GVM_CONFIG_DIR)
 	if err != nil {
 		return nil, err
