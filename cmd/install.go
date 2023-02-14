@@ -21,6 +21,7 @@ import (
 	pb "gopkg.in/cheggaaa/pb.v1"
 
 	"github.com/jaronnie/gvm/internal/global"
+	"github.com/jaronnie/gvm/internal/vm"
 	"github.com/jaronnie/gvm/utilx"
 )
 
@@ -35,7 +36,21 @@ var installCmd = &cobra.Command{
 	Short: "install go bin",
 	Long:  `install go bin`,
 	Args:  cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
-	RunE:  install,
+	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		if len(args) != 0 {
+			return nil, cobra.ShellCompDirectiveNoFileComp
+		}
+		rd := vm.NewRemoteVM(&vm.RemoteVM{
+			Registry: "https://go.dev/dl",
+		})
+
+		vs, err := rd.List()
+		if err != nil {
+			return nil, cobra.ShellCompDirectiveDefault
+		}
+		return vs, cobra.ShellCompDirectiveDefault
+	},
+	RunE: install,
 }
 
 func install(cmd *cobra.Command, args []string) error {
