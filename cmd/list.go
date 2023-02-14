@@ -22,6 +22,8 @@ var (
 	IsRemote bool
 
 	ListNumber int
+
+	ListAll bool
 )
 
 // listCmd represents the list command
@@ -64,8 +66,10 @@ func list(cmd *cobra.Command, args []string) error {
 			return errors.New("get remote version error")
 		}
 
-		if len(vs) >= ListNumber {
-			vs = vs[0:ListNumber]
+		if !ListAll {
+			if len(vs) >= ListNumber {
+				vs = vs[0:ListNumber]
+			}
 		}
 
 		for _, v := range vs {
@@ -81,4 +85,5 @@ func init() {
 
 	listCmd.Flags().BoolVarP(&IsRemote, "remote", "r", false, "is remote")
 	listCmd.Flags().IntVarP(&ListNumber, "number", "n", 30, "show number")
+	listCmd.Flags().BoolVarP(&ListAll, "all", "a", false, "is list all")
 }

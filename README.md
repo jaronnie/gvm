@@ -18,6 +18,9 @@ gvm init
 zsh:
 # echo "autoload -U compinit; compinit" >> ~/.zshrc
 gvm completion zsh > "${fpath[1]}/_gvm"
+
+linux bash:
+gvm completion bash > /etc/bash_completion.d/gvm
 ```
 
 ## install go
@@ -47,6 +50,9 @@ gvm list --remote
 
 # list remote go with limit number
 gvm list --remote -n 100
+
+# list all
+gvm list --remote --all
 ```
 
 ## activate go
@@ -70,6 +76,21 @@ gvm uninstall go1.18.5
 ```shell
 gvm config --registry https://mirrors.aliyun.com/golang
 ```
+
+### bash 补全错误 bash: _get_comp_words_by_ref: command not found
+
+```shell
+# centos
+yum -y install bash-completion
+```
+
+### gvm init: Error: can not get shell type
+
+```shell
+# gvm init <shellType>
+gvm init bash
+```
+
 
 ## todo
 

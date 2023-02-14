@@ -41,7 +41,7 @@ export GOBIN=$GOPATH/bin
 
 // initCmd represents the init command
 var initCmd = &cobra.Command{
-	Use:   "init",
+	Use:   "init <shellType>",
 	Short: "gvm init",
 	Long:  `gvm init`,
 	RunE:  initx,
@@ -49,6 +49,7 @@ var initCmd = &cobra.Command{
 
 func initx(cmd *cobra.Command, args []string) error {
 	shellType := os.Getenv("SHELL")
+	fmt.Printf("get SHELL env: %s\n", shellType)
 
 	if len(args) == 1 {
 		shellType = args[0]
