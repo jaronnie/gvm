@@ -22,6 +22,8 @@ var (
 	Registry string
 )
 
+const GVM = "gvm"
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "gvm",
@@ -82,10 +84,10 @@ func initGlobalValue() {
 	}
 
 	global.HOME_DIR = homeDir
-	global.GVM_CONFIG_DIR = fmt.Sprintf("%s/gvm", homeDir)
-	global.GVM_CONFIG_FILE = fmt.Sprintf("%s/gvm/config.toml", homeDir)
-	global.GVM_CONFIG_RC = fmt.Sprintf("%s/gvm/.gvmrc", homeDir)
-	global.GVM_GOROOT = fmt.Sprintf("%s/gvm/goroot", homeDir)
+	global.GVM_CONFIG_DIR = fmt.Sprintf("%s/%s", homeDir, GVM)
+	global.GVM_CONFIG_FILE = fmt.Sprintf("%s/%s/config.toml", homeDir, GVM)
+	global.GVM_CONFIG_RC = fmt.Sprintf("%s/%s/.gvmrc", homeDir, GVM)
+	global.GVM_GOROOT = fmt.Sprintf("%s/%s/goroot", homeDir, GVM)
 }
 
 func registerFlagCompletion() {

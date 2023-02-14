@@ -28,6 +28,12 @@ gvm install go1.18
 
 # will install go 1.18.5 version
 gvm install go1.18.5
+
+# install offline, default package file path is ~/gvm
+gvm install go1.18.5 --offline
+
+# install offline, package file path is .
+gvm install go1.18.5 --offline -p .
 ```
 
 ## activate go
