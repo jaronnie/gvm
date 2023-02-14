@@ -36,6 +36,19 @@ gvm install go1.18.5 --offline
 gvm install go1.18.5 --offline -p .
 ```
 
+## list
+
+```shell
+# list local go
+gvm list
+
+# list remote go
+gvm list --remote
+
+# list remote go with limit number
+gvm list --remote -n 100
+```
+
 ## activate go
 
 ```shell

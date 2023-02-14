@@ -11,10 +11,17 @@ import (
 	"path/filepath"
 
 	"github.com/fatih/color"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 
 	"github.com/jaronnie/gvm/internal/global"
 	"github.com/jaronnie/gvm/internal/vm"
+)
+
+var (
+	IsRemote bool
+
+	ListNumber int
 )
 
 // listCmd represents the list command
@@ -26,22 +33,42 @@ var listCmd = &cobra.Command{
 }
 
 func list(cmd *cobra.Command, args []string) error {
-	rd := vm.NewLocalVM()
+	if !IsRemote {
+		rd := vm.NewLocalVM()
 
-	vs, err := rd.List()
-	if err != nil {
-		return err
-	}
+		vs, err := rd.List()
+		if err != nil {
+			return err
+		}
 
-	goRoot, err := os.Readlink(global.GVM_GOROOT)
-	if err != nil {
-		// warning: do not use gvm activate before gvm list
-	}
+		goRoot, err := os.Readlink(global.GVM_GOROOT)
+		if err != nil {
+			// warning: do not use gvm activate before gvm list
+		}
 
-	for _, v := range vs {
-		if filepath.Join(global.GVM_CONFIG_DIR, v) == goRoot {
-			color.Blue("*\t%s\n", v)
-		} else {
+		for _, v := range vs {
+			if filepath.Join(global.GVM_CONFIG_DIR, v) == goRoot {
+				color.Blue("*\t%s\n", v)
+			} else {
+				fmt.Printf(" \t%s\n", v)
+			}
+		}
+	} else {
+		rd := vm.NewRemoteVM(&vm.RemoteVM{Registry: "https://go.dev/dl"})
+
+		vs, err := rd.List()
+		if err != nil {
+			return err
+		}
+		if len(vs) == 0 {
+			return errors.New("get remote version error")
+		}
+
+		if len(vs) >= ListNumber {
+			vs = vs[0:ListNumber]
+		}
+
+		for _, v := range vs {
 			fmt.Printf(" \t%s\n", v)
 		}
 	}
@@ -51,4 +78,7 @@ func list(cmd *cobra.Command, args []string) error {
 
 func init() {
 	rootCmd.AddCommand(listCmd)
+
+	listCmd.Flags().BoolVarP(&IsRemote, "remote", "r", false, "is remote")
+	listCmd.Flags().IntVarP(&ListNumber, "number", "n", 30, "show number")
 }
