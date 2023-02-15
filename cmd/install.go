@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
+	"github.com/samber/lo"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	pb "gopkg.in/cheggaaa/pb.v1"
@@ -59,6 +60,13 @@ func install(cmd *cobra.Command, args []string) error {
 	gov := args[0]
 	if !strings.HasPrefix(gov, "go") {
 		return errors.New("invalid go version, please use gox.x")
+	}
+
+	rd := vm.NewLocalVM()
+
+	vs, _ := rd.List()
+	if lo.Contains(vs, gov) {
+		return errors.Errorf("go %s has been installed", gov)
 	}
 
 	fmt.Printf("🖕Install go %s\n", gov)
