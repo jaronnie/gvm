@@ -35,6 +35,25 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          distribution: goreleaser
+          version: v1.4.1
+          args: build --snapshot --single-target --rm-dist
+        env:
+          GOARCH: arm64
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          distribution: goreleaser
+          version: v1.4.1
+          args: build --snapshot --single-target --rm-dist
+        env:
+          GOARCH: amd64
+
+
       - name: Log in to Docker Hub
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
