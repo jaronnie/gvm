@@ -43,7 +43,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
       - name: Docker build and push
         run: |
-          docker build -t jaronnie/gvm:${{ github.ref }}-arm64 -f Dockerfile-arm64 .
-          docker push jaronnie/gvm:${{ github.ref }}-arm64
+          docker build -t jaronnie/gvm:${{ steps.get_version.outputs.VERSION }}-arm64 -f Dockerfile-arm64 .
+          docker push jaronnie/gvm:${{ steps.get_version.outputs.VERSION }}-arm64
