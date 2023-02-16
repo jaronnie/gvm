@@ -43,6 +43,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Docker pull and push
+      - name: Docker build and push
         run: |
-          docker build -t jaronnie/gvm:${{ steps.meta.outputs.tags }}-arm64 -f Dockerfile-arm64 .
+          docker build -t jaronnie/gvm:${{ github.ref }}-arm64 -f Dockerfile-arm64 .
+          docker push jaronnie/gvm:${{ github.ref }}-arm64
