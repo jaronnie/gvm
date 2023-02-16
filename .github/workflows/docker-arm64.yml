@@ -1,9 +1,11 @@
 name: docker-gvm-arm64
 
-on:
-  push:
-    tags:
-      - '*'
+#on:
+#  push:
+#    tags:
+#      - '*'
+
+on: [push]
 
 jobs:
   goreleaser:
