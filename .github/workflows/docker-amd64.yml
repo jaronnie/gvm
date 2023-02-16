@@ -1,4 +1,4 @@
-name: goreleaser-gvm
+name: docker-gvm-amd64
 
 on:
   push:
