@@ -3,7 +3,7 @@ name: goreleaser-gvm
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 
 jobs:
   goreleaser:
