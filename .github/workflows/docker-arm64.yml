@@ -9,7 +9,7 @@ on: [push]
 
 jobs:
   goreleaser:
-    runs-on: arm64
+    runs-on: ubuntu-latest
     steps:
       - uses: uraimo/run-on-arch-action@v2
         with:
