@@ -54,8 +54,6 @@ jobs:
         with:
           context: .
           file: Dockerfile-arm64
-          platforms: |
-            linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}-arm64
           labels: ${{ steps.meta.outputs.labels }}
