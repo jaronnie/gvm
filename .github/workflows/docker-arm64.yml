@@ -11,6 +11,9 @@ jobs:
   goreleaser:
     runs-on: arm64
     steps:
+      - uses: uraimo/run-on-arch-action@v2
+        with:
+          arch: aarch64
       -
         name: Checkout
         uses: actions/checkout@v3
