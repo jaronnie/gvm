@@ -2,11 +2,16 @@
 
 golang version manage
 
-`one issue need help: can not use in goland's terminal!`
+## quick start
+
+```shell
+docker run -it jaronnie/gvm:v1.4.1 bash
+gvm install go1.20
+gvm activate go1.20
+```
 
 ## init
 
-初始化 gvm
 ```shell
 gvm init
 # gvm init <shellType>
@@ -70,14 +75,13 @@ gvm uninstall go1.18.5
 
 ## QA
 
-### 下载 go 压缩包失败
+### download go package error
 
-可以通过设置阿里云的 registry 镜像源解决
 ```shell
 gvm config --registry https://mirrors.aliyun.com/golang
 ```
 
-### bash 补全错误 bash: _get_comp_words_by_ref: command not found
+### bash completion error: bash: _get_comp_words_by_ref: command not found
 
 ```shell
 # centos
@@ -90,7 +94,6 @@ yum -y install bash-completion
 # gvm init <shellType>
 gvm init bash
 ```
-
 
 ## todo
 
