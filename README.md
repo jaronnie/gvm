@@ -11,14 +11,29 @@ gvm install go1.20
 gvm activate go1.20
 ```
 
-## init
+## download gvm
+
+### download by source
 
 ```shell
+go install github.com/jaronnie/gvm@latest
+```
+
+### download from releases
+
+[download](https://github.com/jaronnie/gvm/releases)
+
+## gvm init
+
+```shell
+# download gvm
+
+
 gvm init
 # gvm init <shellType>
 ```
 
-## auto completion
+## gvm complete
 
 ```shell
 zsh:
@@ -29,7 +44,7 @@ linux bash:
 gvm completion bash > /etc/bash_completion.d/gvm
 ```
 
-## install go
+## gvm install
 
 ```shell
 # will install go 1.18
@@ -45,7 +60,7 @@ gvm install go1.18.5 --offline
 gvm install go1.18.5 --offline -p .
 ```
 
-## list
+## gvm list
 
 ```shell
 # list local go
@@ -61,14 +76,14 @@ gvm list --remote -n 100
 gvm list --remote --all
 ```
 
-## activate go
+## gvm activate
 
 ```shell
 # will activate go 1.18 environment
 gvm activate go1.18
 ```
 
-## uninstall go
+## gvm uninstall
 
 ```shell
 gvm uninstall go1.18.5
