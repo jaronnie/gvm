@@ -26,9 +26,6 @@ go install github.com/jaronnie/gvm@latest
 ## gvm init
 
 ```shell
-# download gvm
-
-
 gvm init
 # gvm init <shellType>
 ```
