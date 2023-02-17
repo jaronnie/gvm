@@ -5,7 +5,8 @@ golang version manage
 ## quick start
 
 ```shell
-docker run -it jaronnie/gvm:v1.4.1 bash
+docker run -it jaronnie/gvm:latest bash
+# docker run -it jaronnie/gvm:latest-arm64 bash
 gvm install go1.20
 gvm activate go1.20
 ```
