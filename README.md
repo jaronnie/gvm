@@ -108,6 +108,12 @@ yum -y install bash-completion
 gvm init bash
 ```
 
+### bash: permission denied: /etc/bash_completion.d/gvm
+
+```shell
+gvm completion bash | sudo tee /etc/bash_completion.d/gvm > /dev/null
+```
+
 ## todo
 
 - [ ] support windows
