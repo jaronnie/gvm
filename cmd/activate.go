@@ -60,11 +60,11 @@ func activate(cmd *cobra.Command, args []string) error {
 		return errors.Errorf("please exec `gvm install %s` first", gov)
 	}
 
-	goRoot := filepath.Join(global.GVM_CONFIG_DIR, gov)
+	goRoot := filepath.Join(global.GvmConfigDir, gov)
 
-	_ = os.Remove(global.GVM_GOROOT)
+	_ = os.Remove(global.GvmGoroot)
 
-	err = os.Symlink(goRoot, global.GVM_GOROOT)
+	err = os.Symlink(goRoot, global.GvmGoroot)
 	if err != nil {
 		return err
 	}
@@ -73,7 +73,7 @@ func activate(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf(string(output))
+	fmt.Print(string(output))
 
 	return nil
 }

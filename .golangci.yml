@@ -1,0 +1,13 @@
+run:
+  go: '1.19'
+linters:
+  enable:
+    - thelper
+    - gofumpt
+    - tparallel
+    - unconvert
+    - unparam
+    - wastedassign
+    - revive
+    - tagliatelle
+    - misspell

@@ -47,12 +47,12 @@ func uninstall(cmd *cobra.Command, args []string) error {
 		return errors.New("invalid go version, please use gox.x")
 	}
 
-	goRoot, _ := os.Readlink(global.GVM_GOROOT)
-	if filepath.Join(global.GVM_CONFIG_DIR, gov) == goRoot {
+	goRoot, _ := os.Readlink(global.GvmGoroot)
+	if filepath.Join(global.GvmConfigDir, gov) == goRoot {
 		return errors.Errorf("can not uninstall %s, please exec `gvm activate go<other_version>`", gov)
 	}
 
-	err := os.RemoveAll(filepath.Join(global.GVM_CONFIG_DIR, gov))
+	err := os.RemoveAll(filepath.Join(global.GvmConfigDir, gov))
 	if err != nil {
 		return err
 	}

@@ -19,7 +19,7 @@ func NewRemoteVM(vm *RemoteVM) Interface {
 func (o RemoteVM) List() ([]string, error) {
 	c := colly.NewCollector(
 		colly.Async(true),
-		colly.CacheDir(filepath.Join(global.GVM_CONFIG_DIR, ".cache")),
+		colly.CacheDir(filepath.Join(global.GvmConfigDir, ".cache")),
 	)
 
 	var all []string

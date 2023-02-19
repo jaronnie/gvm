@@ -19,17 +19,14 @@ import (
 	"github.com/jaronnie/gvm/utilx"
 )
 
-var (
-	SetUpGVMInUnix = `
+var SetUpGVMInUnix = `
 # gvm shell setup
 if [ -f "${HOME}/gvm/.gvmrc" ]; then
     source "${HOME}/gvm/.gvmrc"
 fi
 `
-)
 
-var (
-	GVMRCTemplateInUnix = `export GOROOT=$HOME/gvm/goroot
+var GVMRCTemplateInUnix = `export GOROOT=$HOME/gvm/goroot
 export PATH=$PATH:$GOROOT/bin
 {{if empty (env "GOPATH") }}export GOPATH=$HOME/gvm
 export GOBIN=$GOPATH/bin
@@ -37,7 +34,6 @@ export PATH=$PATH:$GOBIN{{else}}export GOPATH={{ env "GOPATH" }}
 export GOBIN=$GOPATH/bin
 {{end}}
 `
-)
 
 // initCmd represents the init command
 var initCmd = &cobra.Command{
@@ -65,14 +61,14 @@ func initx(cmd *cobra.Command, args []string) error {
 	var shellRcFile string
 	switch filepath.Base(shellType) {
 	case "sh":
-		shellRcFile = filepath.Join(global.HOME_DIR, ".shrc")
+		shellRcFile = filepath.Join(global.HomeDir, ".shrc")
 	case "bash":
-		shellRcFile = filepath.Join(global.HOME_DIR, ".bashrc")
+		shellRcFile = filepath.Join(global.HomeDir, ".bashrc")
 	case "zsh":
-		shellRcFile = filepath.Join(global.HOME_DIR, ".zshrc")
+		shellRcFile = filepath.Join(global.HomeDir, ".zshrc")
 	}
 
-	shellConfigfile, err := os.OpenFile(shellRcFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0744)
+	shellConfigfile, err := os.OpenFile(shellRcFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o744)
 	if err != nil {
 		return err
 	}
@@ -93,14 +89,9 @@ func initx(cmd *cobra.Command, args []string) error {
 	// go env GOPATH
 	goPath := os.Getenv("GOPATH")
 	if goPath == "" {
-		output, err := exec.Command("go", "env", "GOPATH").Output()
-		if err != nil {
-			// warning
-			output = []byte("")
-		} else {
-			output = bytes.TrimRight(output, "\n")
-			_ = os.Setenv("GOPATH", string(output))
-		}
+		output, _ := exec.Command("go", "env", "GOPATH").Output()
+		output = bytes.TrimRight(output, "\n")
+		_ = os.Setenv("GOPATH", string(output))
 	}
 
 	template, err := utilx.ParseTemplate(nil, []byte(GVMRCTemplateInUnix))
@@ -108,7 +99,7 @@ func initx(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	err = os.WriteFile(global.GVM_CONFIG_RC, template, 0744)
+	err = os.WriteFile(global.GvmConfigRc, template, 0o744)
 	if err != nil {
 		return err
 	}

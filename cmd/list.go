@@ -43,13 +43,14 @@ func list(cmd *cobra.Command, args []string) error {
 			return err
 		}
 
-		goRoot, err := os.Readlink(global.GVM_GOROOT)
+		goRoot, err := os.Readlink(global.GvmGoroot)
 		if err != nil {
 			// warning: do not use gvm activate before gvm list
+			fmt.Printf("warning: do not use gvm activate before gvm list")
 		}
 
 		for _, v := range vs {
-			if filepath.Join(global.GVM_CONFIG_DIR, v) == goRoot {
+			if filepath.Join(global.GvmConfigDir, v) == goRoot {
 				color.Blue("*\t%s\n", v)
 			} else {
 				fmt.Printf(" \t%s\n", v)

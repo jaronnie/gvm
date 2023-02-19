@@ -18,9 +18,7 @@ import (
 	"github.com/jaronnie/gvm/utilx"
 )
 
-var (
-	Registry string
-)
+var Registry string
 
 const GVM = "gvm"
 
@@ -53,16 +51,16 @@ func init() {
 }
 
 func initConfig() {
-	if b, _ := utilx.PathExists(global.GVM_CONFIG_DIR); !b {
-		if err := os.Mkdir(global.GVM_CONFIG_DIR, 0744); err != nil {
+	if b, _ := utilx.PathExists(global.GvmConfigDir); !b {
+		if err := os.Mkdir(global.GvmConfigDir, 0o744); err != nil {
 			panic(err)
 		}
 	}
 
-	if b, _ := utilx.PathExists(global.GVM_CONFIG_FILE); !b {
+	if b, _ := utilx.PathExists(global.GvmConfigFile); !b {
 		viper.SetConfigName("config")
 		viper.SetConfigType("toml")
-		viper.AddConfigPath(global.GVM_CONFIG_DIR)
+		viper.AddConfigPath(global.GvmConfigDir)
 
 		err := viper.SafeWriteConfig()
 		if err != nil {
@@ -70,7 +68,7 @@ func initConfig() {
 		}
 	}
 
-	viper.SetConfigFile(global.GVM_CONFIG_FILE)
+	viper.SetConfigFile(global.GvmConfigFile)
 	err := viper.ReadInConfig()
 	if err != nil {
 		log.Fatalf("read in config meet error. Err: [%v]", err)
@@ -83,11 +81,11 @@ func initGlobalValue() {
 		panic(err)
 	}
 
-	global.HOME_DIR = homeDir
-	global.GVM_CONFIG_DIR = fmt.Sprintf("%s/%s", homeDir, GVM)
-	global.GVM_CONFIG_FILE = fmt.Sprintf("%s/%s/config.toml", homeDir, GVM)
-	global.GVM_CONFIG_RC = fmt.Sprintf("%s/%s/.gvmrc", homeDir, GVM)
-	global.GVM_GOROOT = fmt.Sprintf("%s/%s/goroot", homeDir, GVM)
+	global.HomeDir = homeDir
+	global.GvmConfigDir = fmt.Sprintf("%s/%s", homeDir, GVM)
+	global.GvmConfigFile = fmt.Sprintf("%s/%s/config.toml", homeDir, GVM)
+	global.GvmConfigRc = fmt.Sprintf("%s/%s/.gvmrc", homeDir, GVM)
+	global.GvmGoroot = fmt.Sprintf("%s/%s/goroot", homeDir, GVM)
 }
 
 func registerFlagCompletion() {

@@ -79,10 +79,10 @@ func install(cmd *cobra.Command, args []string) error {
 			registry = Registry
 		}
 
-		installUrl := fmt.Sprintf("%s/%s.%s-%s.tar.gz", registry, gov, runtime.GOOS, runtime.GOARCH)
-		fmt.Printf("🌿Install from %s\n", installUrl)
+		installURL := fmt.Sprintf("%s/%s.%s-%s.tar.gz", registry, gov, runtime.GOOS, runtime.GOARCH)
+		fmt.Printf("🌿Install from %s\n", installURL)
 
-		resp, err := utilx.GetRawResponse(installUrl)
+		resp, err := utilx.GetRawResponse(installURL)
 		if err != nil {
 			return err
 		}
@@ -92,8 +92,8 @@ func install(cmd *cobra.Command, args []string) error {
 			return errors.New("content length less than 0")
 		}
 
-		filename := filepath.Base(installUrl)
-		file, err := os.Create(filepath.Join(global.GVM_CONFIG_DIR, filename))
+		filename := filepath.Base(installURL)
+		file, err := os.Create(filepath.Join(global.GvmConfigDir, filename))
 		if err != nil {
 			return err
 		}
@@ -122,6 +122,9 @@ func install(cmd *cobra.Command, args []string) error {
 		writer := io.MultiWriter(file, bar)
 
 		_, err = io.Copy(writer, resp.Body)
+		if err != nil {
+			return err
+		}
 
 		bar.Finish()
 
@@ -130,14 +133,14 @@ func install(cmd *cobra.Command, args []string) error {
 		packagePath = filepath.Join(PackagePath, fmt.Sprintf("%s.%s-%s.tar.gz", gov, runtime.GOOS, runtime.GOARCH))
 	}
 
-	fmt.Printf("🚀Start to untar %s to %s\n", packagePath, global.GVM_CONFIG_DIR)
+	fmt.Printf("🚀Start to untar %s to %s\n", packagePath, global.GvmConfigDir)
 
-	err := utilx.Untargz(packagePath, global.GVM_CONFIG_DIR)
+	err := utilx.Untargz(packagePath, global.GvmConfigDir)
 	if err != nil {
 		return err
 	}
 
-	err = os.Rename(filepath.Join(global.GVM_CONFIG_DIR, "go"), filepath.Join(global.GVM_CONFIG_DIR, gov))
+	err = os.Rename(filepath.Join(global.GvmConfigDir, "go"), filepath.Join(global.GvmConfigDir, gov))
 	if err != nil {
 		return err
 	}

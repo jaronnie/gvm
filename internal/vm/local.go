@@ -14,7 +14,7 @@ func NewLocalVM() Interface {
 }
 
 func (r *LocalVM) List() ([]string, error) {
-	dir, err := os.ReadDir(global.GVM_CONFIG_DIR)
+	dir, err := os.ReadDir(global.GvmConfigDir)
 	if err != nil {
 		return nil, err
 	}

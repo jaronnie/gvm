@@ -20,7 +20,7 @@ func Untargz(archive, dest string) error {
 
 	// 如果不存在，则新建dest
 	if e, _ := PathExists(dest); !e {
-		err := os.MkdirAll(dest, 0755)
+		err := os.MkdirAll(dest, 0o755)
 		if err != nil {
 			return err
 		}
@@ -70,7 +70,7 @@ func Untargz(archive, dest string) error {
 func create(name string) (*os.File, error) {
 	dir, _ := filepath.Split(name)
 	// create dir before create file
-	err := os.MkdirAll(dir, 0755)
+	err := os.MkdirAll(dir, 0o755)
 	if err != nil {
 		return nil, err
 	}
