@@ -145,6 +145,12 @@ func install(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
+	// chmod -R 555 gox.xx
+	err = os.Chmod(filepath.Join(global.GvmConfigDir, gov), 0o544)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
