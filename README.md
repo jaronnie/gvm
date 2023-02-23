@@ -1,5 +1,11 @@
 # gvm
 
+[![GitHub release](https://img.shields.io/github/release/jaronnie/gvm.svg?style=flat-square)](https://github.com/jaronnie/gvm/releases/latest)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/jaronnie/gvm/ci.yaml?branch=main&label=gvm-golint&logo=github&style=flat-square)](https://github.com/jaronnie/gvm/actions?query=workflow%3Agvm-golint)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/jaronnie/gvm/ci.yaml?branch=main&label=goreleaser-gvm&logo=github&style=flat-square)](https://github.com/jaronnie/gvm/actions?query=workflow%3Agoreleaser-gvm)
+[![Go Report Card](https://goreportcard.com/badge/github.com/jaronnie/gvm?style=flat-square)](https://goreportcard.com/report/github.com/jaronnie/gvm)
+[![codecov](https://img.shields.io/codecov/c/github/jaronnie/gvm?logo=codecov&style=flat-square)](https://codecov.io/gh/jaronnie/gvm)
+
 golang version manage
 
 ## quick start
