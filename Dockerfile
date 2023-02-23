@@ -1,6 +1,6 @@
 FROM centos:7.9.2009
 
-MAINTAINER jaron@jaronnie.com
+LABEL MAINTAINER jaron@jaronnie.com
 
 COPY ./dist/gvm_linux_amd64/gvm /usr/bin/gvm
 
