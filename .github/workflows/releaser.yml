@@ -30,7 +30,7 @@ jobs:
           git config --global user.name "jaronnie"
           git add CHANGELOG.md
           git commit -m "update CHANGELOG.md"
-          git push
+          git push origin HEAD:main
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v4
