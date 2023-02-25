@@ -1,4 +1,56 @@
 
+<a name="v1.5.3"></a>
+## [v1.5.3](https://github.com/jaronnie/gvm/compare/v1.5.2...v1.5.3)
+
+> 2023-02-25
+
+### Feat
+
+* **gvm:** fix change log workflows
+
+
+<a name="v1.5.2"></a>
+## [v1.5.2](https://github.com/jaronnie/gvm/compare/v1.5.1...v1.5.2)
+
+> 2023-02-25
+
+### Feat
+
+* **gvm:** fix change log workflows
+
+
+<a name="v1.5.1"></a>
+## [v1.5.1](https://github.com/jaronnie/gvm/compare/v1.5.0...v1.5.1)
+
+> 2023-02-25
+
+### Feat
+
+* **gvm:** fix change log workflows
+
+
+<a name="v1.5.0"></a>
+## [v1.5.0](https://github.com/jaronnie/gvm/compare/v1.4.2...v1.5.0)
+
+> 2023-02-25
+
+### Feat
+
+* **gvm:** fix change log workflows
+* **gvm:** fix change log workflows
+* **gvm:** add changelog workflows
+* **gvm:** add changlog
+* **gvm:** update .gitignore
+* **gvm:** update Dockerfile
+* **gvm:** chmod -R 544 go package dir
+* **gvm:** update README.md
+* **gvm:** add .golangci and fix
+* **gvm:** update README.md
+* **gvm:** update README.md
+* **gvm:** update README.md
+* **gvm:** update README.md
+
+
 <a name="v1.4.2"></a>
 ## [v1.4.2](https://github.com/jaronnie/gvm/compare/v1.4.1...v1.4.2)
 
@@ -13,7 +65,7 @@
 
 
 <a name="v1.4.1"></a>
-## [v1.4.1](https://github.com/jaronnie/gvm/compare/v1.3.6...v1.4.1)
+## [v1.4.1](https://github.com/jaronnie/gvm/compare/v1.3.4...v1.4.1)
 
 > 2023-02-16
 
@@ -31,15 +83,6 @@
 * **gvm:** update workflows
 * **gvm:** update workflows
 * **gvm:** update workflows
-
-
-<a name="v1.3.6"></a>
-## [v1.3.6](https://github.com/jaronnie/gvm/compare/v1.3.4...v1.3.6)
-
-> 2023-02-16
-
-### Feat
-
 * **gvm:** update workflows
 * **gvm:** update workflows
 * **gvm:** update workflows
