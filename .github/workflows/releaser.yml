@@ -26,10 +26,10 @@ jobs:
         run: |
           go install github.com/git-chglog/git-chglog/cmd/git-chglog@latest
           git-chglog -o CHANGELOG.md
+          git config --global user.email "jaron@jaronnie.com"
+          git config --global user.name "jaronnie"
           git add CHANGELOG.md
           git commit -m "update CHANGELOG.md"
-          git config --global user.name "jaronnie"
-          git config --global user.email "jaron@jaronnie.com"
           git push
 
       - name: Run GoReleaser
