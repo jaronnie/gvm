@@ -22,6 +22,14 @@ jobs:
         with:
           go-version: '1.19.5'
 
+      - name: generate change log
+        run: |
+          go install github.com/git-chglog/git-chglog/cmd/git-chglog@latest
+          git-chglog -o CHANGELOG.md
+          git add CHANGELOG.md
+          git commit -m "update CHANGELOG.md"
+          git push
+
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v4
         with:
