@@ -1,6 +1,6 @@
 FROM arm64v8/centos:7.9.2009
 
-MAINTAINER jaron@jaronnie.com
+LABEL MAINTAINER jaron@jaronnie.com
 
 COPY ./dist/gvm_linux_arm64/gvm /usr/bin/gvm
 
