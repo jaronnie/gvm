@@ -3,7 +3,9 @@ Copyright © 2023 jaronnie jaron@jaronnie.com
 */
 package main
 
-import "github.com/jaronnie/gvm/cmd"
+import (
+	"github.com/jaronnie/gvm/cmd"
+)
 
 var version string
 

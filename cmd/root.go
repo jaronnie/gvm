@@ -18,7 +18,10 @@ import (
 	"github.com/jaronnie/gvm/utilx"
 )
 
-var Registry string
+var (
+	Registry string
+	Cache    bool
+)
 
 const GVM = "gvm"
 
@@ -46,6 +49,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	rootCmd.PersistentFlags().StringVarP(&Registry, "registry", "i", "https://dl.google.com/go", "set registry")
+	rootCmd.PersistentFlags().BoolVarP(&Cache, "cache", "", false, "get remote version by cache")
 
 	registerFlagCompletion()
 }

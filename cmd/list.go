@@ -57,7 +57,7 @@ func list(cmd *cobra.Command, args []string) error {
 			}
 		}
 	} else {
-		rd := vm.NewRemoteVM(&vm.RemoteVM{Registry: "https://go.dev/dl"})
+		rd := vm.NewRemoteVM(&vm.RemoteVM{Registry: "https://go.dev/dl", Cache: Cache})
 
 		vs, err := rd.List()
 		if err != nil {

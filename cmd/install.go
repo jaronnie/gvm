@@ -43,6 +43,7 @@ var installCmd = &cobra.Command{
 		}
 		rd := vm.NewRemoteVM(&vm.RemoteVM{
 			Registry: "https://go.dev/dl",
+			Cache:    Cache,
 		})
 
 		vs, err := rd.List()
@@ -68,7 +69,6 @@ func install(cmd *cobra.Command, args []string) error {
 	if lo.Contains(vs, gov) {
 		return errors.Errorf("go %s has been installed", gov)
 	}
-
 	fmt.Printf("🖕Install go %s\n", gov)
 
 	var packagePath string
