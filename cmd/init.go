@@ -68,11 +68,11 @@ func initx(cmd *cobra.Command, args []string) error {
 		shellRcFile = filepath.Join(global.HomeDir, ".zshrc")
 	}
 
-	shellConfigfile, err := os.OpenFile(shellRcFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o744)
+	shellConfigFile, err := os.OpenFile(shellRcFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o744)
 	if err != nil {
 		return err
 	}
-	defer shellConfigfile.Close()
+	defer shellConfigFile.Close()
 
 	shellRcData, err := os.ReadFile(shellRcFile)
 	if err != nil {
@@ -80,7 +80,7 @@ func initx(cmd *cobra.Command, args []string) error {
 	}
 
 	if !bytes.Contains(shellRcData, []byte("gvm shell setup")) {
-		_, err = shellConfigfile.Write([]byte(SetUpGVMInUnix))
+		_, err = shellConfigFile.Write([]byte(SetUpGVMInUnix))
 		if err != nil {
 			return err
 		}
@@ -102,6 +102,25 @@ func initx(cmd *cobra.Command, args []string) error {
 	err = os.WriteFile(global.GvmConfigRc, template, 0o744)
 	if err != nil {
 		return err
+	}
+
+	// cp gvm exec binary to $HOME/gvm/bin
+	path, _ := utilx.LookPath(rootCmd.Use)
+	if path == "" {
+		// 如果找不到 gvm, 则复制当前二进制文件到 $HOME/gvm/bin
+		fileStat, err := os.Stat(os.Args[0])
+		if err != nil {
+			return err
+		}
+		file, err := os.ReadFile(os.Args[0])
+		if err != nil {
+			return err
+		}
+		_ = os.MkdirAll(filepath.Join(global.GvmConfigDir, "bin"), 0o755)
+		err = os.WriteFile(filepath.Join(global.GvmConfigDir, "bin", "gvm"), file, fileStat.Mode())
+		if err != nil {
+			return err
+		}
 	}
 
 	fmt.Printf("🚀please exec `source %s` to activate gvm\n", shellRcFile)

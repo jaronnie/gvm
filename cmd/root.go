@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -83,6 +84,13 @@ func initGlobalValue() {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		panic(err)
+	}
+
+	// check
+	if stat, err := os.Stat(filepath.Join(homeDir, rootCmd.Use)); err == nil {
+		if !stat.IsDir() {
+			panic("please make sure $HOME/gvm is a dir")
+		}
 	}
 
 	global.HomeDir = homeDir
