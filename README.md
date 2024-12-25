@@ -29,6 +29,10 @@ go install github.com/jaronnie/gvm@latest
 
 [download](https://github.com/jaronnie/gvm/releases)
 
+```shell
+curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.6.0/gvm_1.6.0_Linux_x86_64.tar.gz
+```
+
 ## gvm init
 
 ```shell
