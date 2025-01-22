@@ -6,37 +6,54 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/jaronnie/gvm?style=flat-square)](https://goreportcard.com/report/github.com/jaronnie/gvm)
 [![codecov](https://img.shields.io/codecov/c/github/jaronnie/gvm?logo=codecov&style=flat-square)](https://codecov.io/gh/jaronnie/gvm)
 
-golang version manage
+golang 多版本管理工具
 
-## quick start
+## 下载 gvm
 
-```shell
-docker run -it jaronnie/gvm:latest bash
-# docker run -it jaronnie/gvm:latest-arm64 bash
-gvm install go1.20
-gvm activate go1.20
-```
-
-## download gvm
-
-### download by source
+### 从源码下载(需要依赖 go 环境)
 
 ```shell
 go install github.com/jaronnie/gvm@latest
 ```
 
-### download from releases
+### 下载二进制文件
 
-[download](https://github.com/jaronnie/gvm/releases)
+[点击下载](https://github.com/jaronnie/gvm/releases)
 
-## gvm init
+```shell
+# linux amd64
+curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.6.0/gvm_1.6.0_Linux_x86_64.tar.gz
+# darwin amd64
+curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.6.0/gvm_1.6.0_Darwin_x86_64.tar.gz
+# darwin arm64(m 系列)
+curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.6.0/gvm_1.6.0_Darwin_arm64.tar.gz
+```
+
+```shell
+tar -zxvf gvm.tar.gz
+mv gvm /usr/local/bin
+```
+
+## 使用 gvm
+
+### 第一步: 初始化 gvm
 
 ```shell
 gvm init
-# gvm init <shellType>
+# 如果执行失败, 手动指定 shell 类型
+# gvm init bash
 ```
 
-## gvm complete
+**让环境变量生效**
+
+```shell
+# zsh
+source ~/.zshrc
+# bash
+source ~/.bashrc
+```
+
+### 第二步: gvm 命令补全(可选)
 
 ```shell
 zsh:
@@ -47,7 +64,7 @@ linux bash:
 gvm completion bash > /etc/bash_completion.d/gvm
 ```
 
-## gvm install
+### 第三步: 下载 go 版本
 
 ```shell
 # will install go 1.18
@@ -63,7 +80,7 @@ gvm install go1.18.5 --offline
 gvm install go1.18.5 --offline -p .
 ```
 
-## gvm list
+### 第四步: 列举下载的 go 版本
 
 ```shell
 # list local go
@@ -79,22 +96,43 @@ gvm list --remote -n 100
 gvm list --remote --all
 ```
 
-## gvm activate
+### 第五步: 激活 go 版本
 
 ```shell
 # will activate go 1.18 environment
 gvm activate go1.18
 ```
 
-## gvm uninstall
+### 第六步: 卸载 go 版本
 
 ```shell
 gvm uninstall go1.18.5
 ```
 
-## QA
+## gvm 相关配置
 
-### download go package error
+### 环境变量设置
+
+```shell
+cat $HOME/gvm/.gvmrc
+
+# get env
+export GOROOT=$HOME/gvm/goroot
+export PATH=$PATH:$GOROOT/bin
+export GOPATH=$HOME/gvm
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
+```
+
+### go 版本下载路径
+
+```shell
+ls $HOME/gvm/go*
+```
+
+## 问题与解决
+
+### 下载 go 版本失败, 设置代理
 
 ```shell
 gvm config --registry https://mirrors.aliyun.com/golang
@@ -119,7 +157,3 @@ gvm init bash
 ```shell
 gvm completion bash | sudo tee /etc/bash_completion.d/gvm > /dev/null
 ```
-
-## todo
-
-- [ ] support windows

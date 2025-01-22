@@ -8,7 +8,7 @@ import (
 )
 
 // ParseTemplate template
-func ParseTemplate(data interface{}, tplT []byte) ([]byte, error) {
+func ParseTemplate(data any, tplT []byte) ([]byte, error) {
 	t := template.Must(template.New("production").Funcs(sprig.TxtFuncMap()).Funcs(RegisterTxtFuncMap()).Parse(string(tplT)))
 
 	buf := new(bytes.Buffer)
@@ -24,13 +24,13 @@ func RegisterTxtFuncMap() template.FuncMap {
 }
 
 func RegisterFuncMap() template.FuncMap {
-	gfm := make(map[string]interface{}, len(registerFuncMap))
+	gfm := make(map[string]any, len(registerFuncMap))
 	for k, v := range registerFuncMap {
 		gfm[k] = v
 	}
 	return gfm
 }
 
-var registerFuncMap = map[string]interface{}{
+var registerFuncMap = map[string]any{
 	"gvm": func() string { return "gvm" },
 }

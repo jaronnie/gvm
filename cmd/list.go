@@ -46,7 +46,7 @@ func list(cmd *cobra.Command, args []string) error {
 		goRoot, err := os.Readlink(global.GvmGoroot)
 		if err != nil {
 			// warning: do not use gvm activate before gvm list
-			fmt.Printf("warning: do not use gvm activate before gvm list")
+			fmt.Print("warning: do not use gvm activate before gvm list")
 		}
 
 		for _, v := range vs {
