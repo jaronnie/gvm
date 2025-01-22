@@ -7,7 +7,7 @@ import (
 	"github.com/jaronnie/gvm/cmd"
 )
 
-var version = "v1.7.0"
+var version = "v1.7.1"
 
 func main() {
 	cmd.Version = version
