@@ -43,10 +43,7 @@ func list(cmd *cobra.Command, args []string) error {
 			return err
 		}
 
-		goRoot, err := os.Readlink(global.GvmGoroot)
-		if err != nil {
-			return nil
-		}
+		goRoot, _ := os.Readlink(global.GvmGoroot)
 
 		for _, v := range vs {
 			if filepath.Join(global.GvmConfigDir, v) == goRoot {
