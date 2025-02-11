@@ -20,5 +20,5 @@ RUN ARCH=$(uname -m) && \
       cp /dist/gvm_linux_arm64/gvm /usr/local/bin/gvm; \
     fi
 
-RUN gvm init sh \
-    && cp /root/gvm/.gvmrc /etc/profile.d/.gvmrc.sh
+RUN apk add bash \
+    && gvm init bash
