@@ -10,6 +10,12 @@ golang 多版本管理工具
 
 ## 下载 gvm
 
+### Docker
+
+```shell
+docker run -it ghcr.io/jaronnie/gvm:latest bash
+```
+
 ### 从源码下载(需要依赖 go 环境)
 
 ```shell
@@ -22,11 +28,11 @@ go install github.com/jaronnie/gvm@latest
 
 ```shell
 # linux amd64
-curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.7.2/gvm_1.7.2_Linux_x86_64.tar.gz
+curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.8.0/gvm_1.8.0_Linux_x86_64.tar.gz
 # darwin amd64
-curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.7.2/gvm_1.7.2_Darwin_x86_64.tar.gz
+curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.8.0/gvm_1.8.0_Darwin_x86_64.tar.gz
 # darwin arm64(m 系列)
-curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.7.2/gvm_1.7.2_Darwin_arm64.tar.gz
+curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.8.0/gvm_1.8.0_Darwin_arm64.tar.gz
 ```
 
 ```shell
@@ -67,17 +73,14 @@ gvm completion bash > /etc/bash_completion.d/gvm
 ### 第三步: 下载 go 版本
 
 ```shell
-# will install go 1.18
-gvm install go1.18
+# will install go 1.23.5
+gvm install go1.23.5
 
-# will install go 1.18.5 version
-gvm install go1.18.5
-
-# install offline, default package file path is ~/gvm
-gvm install go1.18.5 --offline
+# install offline, default package file path is $HOME/gvm
+gvm install go1.23.5 --offline
 
 # install offline, package file path is .
-gvm install go1.18.5 --offline -p .
+gvm install go1.23.5 --offline -p .
 ```
 
 ### 第四步: 列举下载的 go 版本
@@ -99,14 +102,14 @@ gvm list --remote --all
 ### 第五步: 激活 go 版本
 
 ```shell
-# will activate go 1.18 environment
-gvm activate go1.18
+# will activate go 1.23.5 environment
+gvm activate go1.23.5
 ```
 
 ### 第六步: 卸载 go 版本
 
 ```shell
-gvm uninstall go1.18.5
+gvm uninstall go1.23.5
 ```
 
 ## gvm 相关配置
