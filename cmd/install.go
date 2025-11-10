@@ -73,13 +73,20 @@ func install(cmd *cobra.Command, args []string) error {
 
 	var packagePath string
 
+	var archiveExt string
+	if runtime.GOOS == "windows" {
+		archiveExt = ".zip"
+	} else {
+		archiveExt = ".tar.gz"
+	}
+
 	if !IsOffline {
 		registry := viper.GetString("registry")
 		if registry == "" {
 			registry = Registry
 		}
 
-		installURL := fmt.Sprintf("%s/%s.%s-%s.tar.gz", registry, gov, runtime.GOOS, runtime.GOARCH)
+		installURL := fmt.Sprintf("%s/%s.%s-%s%s", registry, gov, runtime.GOOS, runtime.GOARCH, archiveExt)
 		fmt.Printf("🌿Install from %s\n", installURL)
 
 		resp, err := utilx.GetRawResponse(installURL)
@@ -130,12 +137,17 @@ func install(cmd *cobra.Command, args []string) error {
 
 		fmt.Printf("🔥Install %s successfully\n", gov)
 	} else {
-		packagePath = filepath.Join(PackagePath, fmt.Sprintf("%s.%s-%s.tar.gz", gov, runtime.GOOS, runtime.GOARCH))
+		packagePath = filepath.Join(PackagePath, fmt.Sprintf("%s.%s-%s%s", gov, runtime.GOOS, runtime.GOARCH, archiveExt))
 	}
 
-	fmt.Printf("🚀Start to untar %s to %s\n", packagePath, global.GvmConfigDir)
+	fmt.Printf("🚀Start to extract %s to %s\n", packagePath, global.GvmConfigDir)
 
-	err := utilx.Untargz(packagePath, global.GvmConfigDir)
+	var err error
+	if runtime.GOOS == "windows" {
+		err = utilx.Unzip(packagePath, global.GvmConfigDir)
+	} else {
+		err = utilx.Untargz(packagePath, global.GvmConfigDir)
+	}
 	if err != nil {
 		return err
 	}

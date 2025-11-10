@@ -2,6 +2,7 @@ package utilx
 
 import (
 	"archive/tar"
+	"archive/zip"
 	"compress/gzip"
 	"fmt"
 	"io"
@@ -75,4 +76,67 @@ func create(name string) (*os.File, error) {
 		return nil, err
 	}
 	return os.Create(name)
+}
+
+// Unzip extracts a zip archive to the destination directory
+// @archive : the zip file's path, such as - "./test.zip"
+// @dest    : the file unzip dest, such as "./ttt"
+func Unzip(archive, dest string) error {
+	if exist, _ := PathExists(archive); !exist {
+		return fmt.Errorf("archive not found: %s", archive)
+	}
+
+	// create dest if not exists
+	if e, _ := PathExists(dest); !e {
+		err := os.MkdirAll(dest, 0o755)
+		if err != nil {
+			return err
+		}
+	}
+
+	r, err := zip.OpenReader(archive)
+	if err != nil {
+		return err
+	}
+	defer r.Close()
+
+	for _, f := range r.File {
+		fpath := filepath.Join(dest, f.Name)
+
+		// Check for ZipSlip vulnerability
+		if !filepath.HasPrefix(fpath, filepath.Clean(dest)+string(os.PathSeparator)) {
+			return fmt.Errorf("illegal file path: %s", fpath)
+		}
+
+		if f.FileInfo().IsDir() {
+			os.MkdirAll(fpath, os.ModePerm)
+			continue
+		}
+
+		// Create parent directory if needed
+		if err = os.MkdirAll(filepath.Dir(fpath), os.ModePerm); err != nil {
+			return err
+		}
+
+		outFile, err := os.OpenFile(fpath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
+		if err != nil {
+			return err
+		}
+
+		rc, err := f.Open()
+		if err != nil {
+			outFile.Close()
+			return err
+		}
+
+		_, err = io.Copy(outFile, rc)
+		outFile.Close()
+		rc.Close()
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

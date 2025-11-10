@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -64,9 +65,23 @@ func activate(cmd *cobra.Command, args []string) error {
 
 	_ = os.Remove(global.GvmGoroot)
 
-	err = os.Symlink(goRoot, global.GvmGoroot)
-	if err != nil {
-		return err
+	if runtime.GOOS == "windows" {
+		// On Windows, use directory junctions or copy directory
+		// Try to create a symlink (requires admin privileges or Developer Mode on Windows 10+)
+		err = os.Symlink(goRoot, global.GvmGoroot)
+		if err != nil {
+			// If symlink fails, use a different approach
+			// Create a junction using mklink /J (directory junction)
+			output, cmdErr := exec.Command("cmd", "/C", "mklink", "/J", global.GvmGoroot, goRoot).CombinedOutput()
+			if cmdErr != nil {
+				return errors.Errorf("failed to create symlink/junction: %v, output: %s", cmdErr, string(output))
+			}
+		}
+	} else {
+		err = os.Symlink(goRoot, global.GvmGoroot)
+		if err != nil {
+			return err
+		}
 	}
 
 	output, err := exec.Command("go", "version").CombinedOutput()

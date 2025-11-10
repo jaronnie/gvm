@@ -11,6 +11,8 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
+	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -35,6 +37,22 @@ export GOBIN=$GOPATH/bin
 {{end}}
 `
 
+var SetUpGVMInWindows = `
+# gvm shell setup
+if (Test-Path "$env:USERPROFILE\gvm\.gvmrc.ps1") {
+    . "$env:USERPROFILE\gvm\.gvmrc.ps1"
+}
+`
+
+var GVMRCTemplateInWindows = `$env:GOROOT = "$env:USERPROFILE\gvm\goroot"
+$env:PATH = "$env:PATH;$env:GOROOT\bin"
+{{if empty (env "GOPATH") }}$env:GOPATH = "$env:USERPROFILE\gvm"
+$env:GOBIN = "$env:GOPATH\bin"
+$env:PATH = "$env:PATH;$env:GOBIN"{{else}}$env:GOPATH = "{{ env "GOPATH" }}"
+$env:GOBIN = "$env:GOPATH\bin"
+{{end}}
+`
+
 // initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init <shellType>",
@@ -44,6 +62,13 @@ var initCmd = &cobra.Command{
 }
 
 func initx(cmd *cobra.Command, args []string) error {
+	if runtime.GOOS == "windows" {
+		return initWindows(args)
+	}
+	return initUnix(args)
+}
+
+func initUnix(args []string) error {
 	shellType := os.Getenv("SHELL")
 	fmt.Printf("get SHELL env: %s\n", shellType)
 
@@ -124,6 +149,101 @@ func initx(cmd *cobra.Command, args []string) error {
 	}
 
 	fmt.Printf("🚀please exec `source %s` to activate gvm\n", shellRcFile)
+
+	return nil
+}
+
+func initWindows(args []string) error {
+	shellType := "powershell"
+	if len(args) == 1 {
+		shellType = args[0]
+	}
+
+	fmt.Printf("🚀get shell type %s\n", shellType)
+
+	var shellRcFile string
+	var setupScript string
+	var gvmrcFile string
+
+	switch shellType {
+	case "powershell", "pwsh":
+		// PowerShell profile path
+		output, err := exec.Command("powershell", "-Command", "echo $PROFILE").Output()
+		if err == nil {
+			shellRcFile = strings.TrimSpace(string(output))
+		} else {
+			// Fallback to default PowerShell profile location
+			shellRcFile = filepath.Join(global.HomeDir, "Documents", "WindowsPowerShell", "Microsoft.PowerShell_profile.ps1")
+		}
+		setupScript = SetUpGVMInWindows
+		gvmrcFile = filepath.Join(global.GvmConfigDir, ".gvmrc.ps1")
+	default:
+		return errors.Errorf("unsupported shell type on Windows: %s. Please use 'powershell' or 'pwsh'", shellType)
+	}
+
+	// Ensure the profile directory exists
+	profileDir := filepath.Dir(shellRcFile)
+	if err := os.MkdirAll(profileDir, 0o755); err != nil {
+		return err
+	}
+
+	shellConfigFile, err := os.OpenFile(shellRcFile, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0o644)
+	if err != nil {
+		return err
+	}
+	defer shellConfigFile.Close()
+
+	shellRcData, err := os.ReadFile(shellRcFile)
+	if err != nil {
+		return err
+	}
+
+	if !bytes.Contains(shellRcData, []byte("gvm shell setup")) {
+		_, err = shellConfigFile.Write([]byte(setupScript))
+		if err != nil {
+			return err
+		}
+	}
+
+	// go env GOPATH
+	goPath := os.Getenv("GOPATH")
+	if goPath == "" {
+		output, _ := exec.Command("go", "env", "GOPATH").Output()
+		output = bytes.TrimSpace(output)
+		_ = os.Setenv("GOPATH", string(output))
+	}
+
+	template, err := utilx.ParseTemplate(nil, []byte(GVMRCTemplateInWindows))
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile(gvmrcFile, template, 0o644)
+	if err != nil {
+		return err
+	}
+
+	// cp gvm exec binary to %USERPROFILE%/gvm/bin
+	path, _ := utilx.LookPath(rootCmd.Use)
+	if path == "" {
+		// 如果找不到 gvm, 则复制当前二进制文件到 %USERPROFILE%/gvm/bin
+		fileStat, err := os.Stat(os.Args[0])
+		if err != nil {
+			return err
+		}
+		file, err := os.ReadFile(os.Args[0])
+		if err != nil {
+			return err
+		}
+		_ = os.MkdirAll(filepath.Join(global.GvmConfigDir, "bin"), 0o755)
+		binaryName := "gvm.exe"
+		err = os.WriteFile(filepath.Join(global.GvmConfigDir, "bin", binaryName), file, fileStat.Mode())
+		if err != nil {
+			return err
+		}
+	}
+
+	fmt.Printf("🚀please restart your PowerShell or run `. $PROFILE` to activate gvm\n")
 
 	return nil
 }

@@ -26,6 +26,8 @@ go install github.com/jaronnie/gvm@latest
 
 [点击下载](https://github.com/jaronnie/gvm/releases)
 
+#### Linux/macOS
+
 ```shell
 # linux amd64
 curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.8.0/gvm_1.8.0_Linux_x86_64.tar.gz
@@ -40,9 +42,26 @@ tar -zxvf gvm.tar.gz
 mv gvm /usr/local/bin
 ```
 
+#### Windows
+
+```powershell
+# 下载 Windows 版本
+# amd64
+Invoke-WebRequest -Uri "https://github.com/jaronnie/gvm/releases/download/v1.8.0/gvm_1.8.0_Windows_x86_64.zip" -OutFile "gvm.zip"
+# arm64
+Invoke-WebRequest -Uri "https://github.com/jaronnie/gvm/releases/download/v1.8.0/gvm_1.8.0_Windows_arm64.zip" -OutFile "gvm.zip"
+
+# 解压
+Expand-Archive -Path gvm.zip -DestinationPath $env:USERPROFILE\gvm\bin
+# 添加到 PATH (需要管理员权限，或者手动添加到系统环境变量)
+[Environment]::SetEnvironmentVariable("Path", $env:Path + ";$env:USERPROFILE\gvm\bin", "User")
+```
+
 ## 使用 gvm
 
 ### 第一步: 初始化 gvm
+
+#### Linux/macOS
 
 ```shell
 gvm init
@@ -59,15 +78,36 @@ source ~/.zshrc
 source ~/.bashrc
 ```
 
+#### Windows
+
+```powershell
+# 初始化 gvm (使用 PowerShell)
+gvm init powershell
+
+# 让环境变量生效 (重启 PowerShell 或运行)
+. $PROFILE
+```
+
+**注意**: Windows 上使用 gvm activate 命令可能需要管理员权限来创建符号链接。如果没有管理员权限，建议启用 Windows 10/11 的开发者模式。
+
 ### 第二步: gvm 命令补全(可选)
 
+#### Linux/macOS
+
 ```shell
-zsh:
+# zsh:
 # echo "autoload -U compinit; compinit" >> ~/.zshrc
 gvm completion zsh > "${fpath[1]}/_gvm"
 
-linux bash:
+# linux bash:
 gvm completion bash > /etc/bash_completion.d/gvm
+```
+
+#### Windows
+
+```powershell
+# PowerShell 补全支持
+gvm completion powershell > $env:USERPROFILE\Documents\WindowsPowerShell\Modules\gvm\gvm.ps1
 ```
 
 ### 第三步: 下载 go 版本
@@ -116,6 +156,8 @@ gvm uninstall go1.23.5
 
 ### 环境变量设置
 
+#### Linux/macOS
+
 ```shell
 cat $HOME/gvm/.gvmrc
 
@@ -127,10 +169,29 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 ```
 
+#### Windows
+
+```powershell
+cat $env:USERPROFILE\gvm\.gvmrc.ps1
+
+# get env
+$env:GOROOT = "$env:USERPROFILE\gvm\goroot"
+$env:PATH = "$env:PATH;$env:GOROOT\bin"
+$env:GOPATH = "$env:USERPROFILE\gvm"
+$env:GOBIN = "$env:GOPATH\bin"
+$env:PATH = "$env:PATH;$env:GOBIN"
+```
+
 ### go 版本下载路径
 
+#### Linux/macOS
 ```shell
 ls $HOME/gvm/go*
+```
+
+#### Windows
+```powershell
+ls $env:USERPROFILE\gvm\go*
 ```
 
 ## 问题与解决
