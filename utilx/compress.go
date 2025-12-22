@@ -9,6 +9,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 )
 
 // Untargz 解压 tar.gz
@@ -104,7 +105,7 @@ func Unzip(archive, dest string) error {
 		fpath := filepath.Join(dest, f.Name)
 
 		// Check for ZipSlip vulnerability
-		if !filepath.HasPrefix(fpath, filepath.Clean(dest)+string(os.PathSeparator)) {
+		if !strings.HasPrefix(fpath, filepath.Clean(dest)+string(os.PathSeparator)) {
 			return fmt.Errorf("illegal file path: %s", fpath)
 		}
 
