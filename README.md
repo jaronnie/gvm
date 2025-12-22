@@ -164,6 +164,12 @@ ls $env:USERPROFILE\gvm\go*
 
 ## 问题与解决
 
+### windows: 无法加载文件 C:\Users\xx\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1，因为在此系统上禁止运行脚本
+
+```shell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUse
+```
+
 ### 下载 go 版本失败, 设置代理
 
 ```shell
