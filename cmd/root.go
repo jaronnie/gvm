@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
@@ -36,9 +37,35 @@ var rootCmd = &cobra.Command{
 	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
+// isInitialized checks if GVM has been initialized by looking for the .gvmrc file
+func isInitialized() bool {
+	if global.GvmConfigRc == "" {
+		return false
+	}
+	exists, _ := utilx.PathExists(global.GvmConfigRc)
+	return exists
+}
+
+// checkInit validates that GVM has been initialized before allowing commands to run
+func checkInit(cmd *cobra.Command, args []string) error {
+	// Allow init command to run without checking initialization
+	if cmd.Name() == "init" || cmd.Name() == "version" || cmd.Name() == "help" {
+		return nil
+	}
+
+	if !isInitialized() {
+		return errors.New("gvm has not been initialized. Please run 'gvm init' first")
+	}
+
+	return nil
+}
+
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
+	// Add persistent pre-run hook to check initialization for all commands
+	rootCmd.PersistentPreRunE = checkInit
+
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
