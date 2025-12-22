@@ -1,13 +1,17 @@
 package utilx
 
-import "os"
+import (
+	"errors"
+	"io/fs"
+	"os"
+)
 
 func PathExists(path string) (bool, error) {
 	_, err := os.Stat(path)
 	if err == nil {
 		return true, nil
 	}
-	if os.IsNotExist(err) {
+	if errors.Is(err, fs.ErrNotExist) {
 		return false, nil
 	}
 	return false, err

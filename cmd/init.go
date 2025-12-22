@@ -62,6 +62,13 @@ var initCmd = &cobra.Command{
 }
 
 func initx(cmd *cobra.Command, args []string) error {
+	// Detect and show existing Go installations
+	existingInstallations, _ := detectExistingGoInstallations()
+	if existingInstallations != "" {
+		fmt.Printf("❌  Initialization aborted due to existing Go installation conflicts %s.\n", existingInstallations)
+		return nil
+	}
+
 	if runtime.GOOS == "windows" {
 		return initWindows(args)
 	}
@@ -70,14 +77,26 @@ func initx(cmd *cobra.Command, args []string) error {
 
 func initUnix(args []string) error {
 	shellType := os.Getenv("SHELL")
-	fmt.Printf("get SHELL env: %s\n", shellType)
 
+	// If shell type is provided as argument, use it
 	if len(args) == 1 {
 		shellType = args[0]
 	}
 
+	// If still no shell type, try to detect from common locations
 	if shellType == "" {
-		return errors.New("can not get shell type")
+		// Try to detect shell from common shell paths
+		if _, err := os.Stat("/bin/bash"); err == nil {
+			shellType = "bash"
+		} else if _, err = os.Stat("/bin/sh"); err == nil {
+			shellType = "sh"
+		} else if _, err = os.Stat("/bin/zsh"); err == nil {
+			shellType = "zsh"
+		} else if _, err = os.Stat("/bin/fish"); err == nil {
+			shellType = "fish"
+		} else {
+			return errors.New("cannot determine shell type. Please specify shell type: gvm init <bash|zsh|sh>")
+		}
 	}
 
 	fmt.Printf("🚀get shell type %s\n", shellType)
@@ -91,6 +110,8 @@ func initUnix(args []string) error {
 		shellRcFile = filepath.Join(global.HomeDir, ".bashrc")
 	case "zsh":
 		shellRcFile = filepath.Join(global.HomeDir, ".zshrc")
+	case "fish":
+		shellRcFile = filepath.Join(global.HomeDir, ".fishrc")
 	}
 
 	shellConfigFile, err := os.OpenFile(shellRcFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o744)
@@ -148,7 +169,8 @@ func initUnix(args []string) error {
 		}
 	}
 
-	fmt.Printf("🚀please exec `source %s` to activate gvm\n", shellRcFile)
+	fmt.Print("🚀gvm initialized successfully!\n")
+	fmt.Printf("Please run `source %s` to activate gvm\n", shellRcFile)
 
 	return nil
 }
@@ -243,9 +265,38 @@ func initWindows(args []string) error {
 		}
 	}
 
-	fmt.Printf("🚀please restart your PowerShell or run `. $PROFILE` to activate gvm\n")
+	fmt.Print("🚀GVM initialized successfully!\n")
+	fmt.Printf("Please restart your PowerShell or run `. %s` to activate GVM\n", shellRcFile)
 
 	return nil
+}
+
+// detectExistingGoInstallations detects existing Go installations not managed by GVM
+func detectExistingGoInstallations() (string, error) {
+	// Check PATH for go executable
+	_, err := exec.LookPath("go")
+	if err != nil {
+		// Go not found in PATH, no conflicts
+		return "", nil
+	}
+
+	// Get the actual GOROOT from the existing Go installation
+	output, err := exec.Command("go", "env", "GOROOT").CombinedOutput()
+	if err != nil {
+		return "", nil // If we can't get GOROOT, assume no conflict
+	}
+
+	existingGoroot := strings.TrimSpace(string(output))
+	if existingGoroot == "" {
+		return "", nil
+	}
+
+	// Check if this Go installation is managed by GVM
+	// GVM-managed installations are in ~/gvm/go{version} format
+	if !strings.HasPrefix(existingGoroot, global.GvmConfigDir) {
+		return existingGoroot, nil
+	}
+	return "", nil
 }
 
 func init() {

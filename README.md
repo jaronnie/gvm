@@ -30,11 +30,11 @@ go install github.com/jaronnie/gvm@latest
 
 ```shell
 # linux amd64
-curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.8.0/gvm_1.8.0_Linux_x86_64.tar.gz
+curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.9.0/gvm_1.8.0_Linux_x86_64.tar.gz
 # darwin amd64
-curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.8.0/gvm_1.8.0_Darwin_x86_64.tar.gz
+curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.9.0/gvm_1.8.0_Darwin_x86_64.tar.gz
 # darwin arm64(m 系列)
-curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.8.0/gvm_1.8.0_Darwin_arm64.tar.gz
+curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.9.0/gvm_1.8.0_Darwin_arm64.tar.gz
 ```
 
 ```shell
@@ -47,9 +47,9 @@ mv gvm /usr/local/bin
 ```powershell
 # 下载 Windows 版本
 # amd64
-Invoke-WebRequest -Uri "https://github.com/jaronnie/gvm/releases/download/v1.8.0/gvm_1.8.0_Windows_x86_64.zip" -OutFile "gvm.zip"
+Invoke-WebRequest -Uri "https://github.com/jaronnie/gvm/releases/download/v1.9.0/gvm_1.8.0_Windows_x86_64.zip" -OutFile "gvm.zip"
 # arm64
-Invoke-WebRequest -Uri "https://github.com/jaronnie/gvm/releases/download/v1.8.0/gvm_1.8.0_Windows_arm64.zip" -OutFile "gvm.zip"
+Invoke-WebRequest -Uri "https://github.com/jaronnie/gvm/releases/download/v1.9.0/gvm_1.8.0_Windows_arm64.zip" -OutFile "gvm.zip"
 
 # 解压
 Expand-Archive -Path gvm.zip -DestinationPath $env:USERPROFILE\gvm\bin
@@ -65,8 +65,6 @@ Expand-Archive -Path gvm.zip -DestinationPath $env:USERPROFILE\gvm\bin
 
 ```shell
 gvm init
-# 如果执行失败, 手动指定 shell 类型
-# gvm init bash
 ```
 
 **让环境变量生效**
@@ -152,36 +150,6 @@ gvm activate go1.23.5
 gvm uninstall go1.23.5
 ```
 
-## gvm 相关配置
-
-### 环境变量设置
-
-#### Linux/macOS
-
-```shell
-cat $HOME/gvm/.gvmrc
-
-# get env
-export GOROOT=$HOME/gvm/goroot
-export PATH=$PATH:$GOROOT/bin
-export GOPATH=$HOME/gvm
-export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOBIN
-```
-
-#### Windows
-
-```powershell
-cat $env:USERPROFILE\gvm\.gvmrc.ps1
-
-# get env
-$env:GOROOT = "$env:USERPROFILE\gvm\goroot"
-$env:PATH = "$env:PATH;$env:GOROOT\bin"
-$env:GOPATH = "$env:USERPROFILE\gvm"
-$env:GOBIN = "$env:GOPATH\bin"
-$env:PATH = "$env:PATH;$env:GOBIN"
-```
-
 ### go 版本下载路径
 
 #### Linux/macOS
@@ -207,13 +175,6 @@ gvm config --registry https://mirrors.aliyun.com/golang
 ```shell
 # centos
 yum -y install bash-completion
-```
-
-### gvm init: Error: can not get shell type
-
-```shell
-# gvm init <shellType>
-gvm init bash
 ```
 
 ### bash: permission denied: /etc/bash_completion.d/gvm
