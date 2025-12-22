@@ -10,6 +10,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -37,17 +38,27 @@ var rootCmd = &cobra.Command{
 	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
-// isInitialized checks if GVM has been initialized by looking for the .gvmrc file
+// isInitialized checks if GVM has been initialized by looking for the appropriate .gvmrc file
 func isInitialized() bool {
-	if global.GvmConfigRc == "" {
+	if global.GvmConfigDir == "" {
 		return false
 	}
-	exists, _ := utilx.PathExists(global.GvmConfigRc)
+
+	var gvmrcPath string
+	if runtime.GOOS == "windows" {
+		// Windows uses .gvmrc.ps1
+		gvmrcPath = filepath.Join(global.GvmConfigDir, ".gvmrc.ps1")
+	} else {
+		// Unix-like systems use .gvmrc
+		gvmrcPath = filepath.Join(global.GvmConfigDir, ".gvmrc")
+	}
+
+	exists, _ := utilx.PathExists(gvmrcPath)
 	return exists
 }
 
 // checkInit validates that GVM has been initialized before allowing commands to run
-func checkInit(cmd *cobra.Command, args []string) error {
+func checkInit(cmd *cobra.Command, _ []string) error {
 	// Allow init command to run without checking initialization
 	if cmd.Name() == "init" || cmd.Name() == "version" || cmd.Name() == "help" {
 		return nil
