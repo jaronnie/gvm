@@ -47,9 +47,9 @@ mv gvm /usr/local/bin
 ```powershell
 # 下载 Windows 版本
 # amd64
-Invoke-WebRequest -Uri "https://github.com/jaronnie/gvm/releases/download/v1.9.0/gvm_1.8.0_Windows_x86_64.zip" -OutFile "gvm.zip"
+Invoke-WebRequest -Uri "https://github.com/jaronnie/gvm/releases/download/v1.9.0/gvm_Windows_x86_64.zip" -OutFile "gvm.zip"
 # arm64
-Invoke-WebRequest -Uri "https://github.com/jaronnie/gvm/releases/download/v1.9.0/gvm_1.8.0_Windows_arm64.zip" -OutFile "gvm.zip"
+Invoke-WebRequest -Uri "https://github.com/jaronnie/gvm/releases/download/v1.9.0/gvm_Windows_arm64.zip" -OutFile "gvm.zip"
 
 # 解压
 Expand-Archive -Path gvm.zip -DestinationPath $env:USERPROFILE\gvm\bin
