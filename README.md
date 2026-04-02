@@ -30,11 +30,11 @@ go install github.com/jaronnie/gvm@latest
 
 ```shell
 # linux amd64
-curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.9.0/gvm_1.8.0_Linux_x86_64.tar.gz
+curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.9.0/gvm_Linux_x86_64.tar.gz
 # darwin amd64
-curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.9.0/gvm_1.8.0_Darwin_x86_64.tar.gz
+curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.9.0/gvm_Darwin_x86_64.tar.gz
 # darwin arm64(m 系列)
-curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.9.0/gvm_1.8.0_Darwin_arm64.tar.gz
+curl -L -o gvm.tar.gz https://github.com/jaronnie/gvm/releases/download/v1.9.0/gvm_Darwin_arm64.tar.gz
 ```
 
 ```shell
